@@ -21,6 +21,17 @@ export function CookieBanner() {
     }
   }, []);
 
+  // While the banner is up it sits over the bottom of the page, which would
+  // otherwise hide whatever the screen's main action is. Reserve the space.
+  useEffect(() => {
+    if (choice !== null) return;
+    const prev = document.body.style.paddingBottom;
+    document.body.style.paddingBottom = "13rem";
+    return () => {
+      document.body.style.paddingBottom = prev;
+    };
+  }, [choice]);
+
   if (choice !== null) return null;
 
   function decide(value: "accepted" | "rejected") {
