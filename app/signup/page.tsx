@@ -3,10 +3,15 @@ import type { Metadata } from "next";
 import { AuthForm } from "@/components/auth-form";
 import { Notice } from "@/components/ui";
 import { supabaseConfigured } from "@/lib/env";
+import { DEMO } from "@/lib/demo";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = { title: "Create your account" };
 
 export default function SignupPage() {
+  // No database: there is nothing to sign in to, so go straight to the app.
+  if (DEMO) redirect("/top-match");
+
   return (
     <main className="flex min-h-dvh flex-col px-5 pb-10 pt-8">
       <Link href="/" className="text-sm underline text-ink-soft">
