@@ -25,7 +25,9 @@ export default async function WelcomePage() {
         <div className="mb-4">
           <Notice tone="gold" title="Not connected yet">
             Supabase keys are missing, so sign-up and sign-in are switched off.
-            See <code className="font-mono">SETUP.md</code>.
+            Set them in <code className="font-mono">.env.local</code> locally, or in
+            the host’s environment variables when deployed. See{" "}
+            <code className="font-mono">SETUP.md</code>.
           </Notice>
         </div>
       ) : null}

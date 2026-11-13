@@ -22,8 +22,10 @@ export default function SignupPage() {
           <AuthForm mode="signup" />
         ) : (
           <Notice tone="gold" title="Not connected yet">
-            Add your Supabase keys to <code className="font-mono">.env.local</code>{" "}
-            to enable sign-up. See <code className="font-mono">SETUP.md</code>.
+            Sign-up is off until the Supabase keys are set — in{" "}
+            <code className="font-mono">.env.local</code> locally, or in the
+            host’s environment variables when deployed. See{" "}
+            <code className="font-mono">SETUP.md</code>.
           </Notice>
         )}
       </div>

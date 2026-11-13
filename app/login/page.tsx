@@ -22,8 +22,10 @@ export default function LoginPage() {
           <AuthForm mode="login" />
         ) : (
           <Notice tone="gold" title="Not connected yet">
-            Add your Supabase keys to <code className="font-mono">.env.local</code>.
-            See <code className="font-mono">SETUP.md</code>.
+            Log-in is off until the Supabase keys are set — in{" "}
+            <code className="font-mono">.env.local</code> locally, or in the
+            host’s environment variables when deployed. See{" "}
+            <code className="font-mono">SETUP.md</code>.
           </Notice>
         )}
       </div>
