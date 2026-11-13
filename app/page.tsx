@@ -30,16 +30,6 @@ export default async function WelcomePage() {
           </Notice>
         </div>
       ) : null}
-      {false ? (
-        <div className="mb-4">
-          <Notice tone="gold" title="Not connected yet">
-            Supabase keys are missing, so sign-up and sign-in are switched off.
-            Set them in <code className="font-mono">.env.local</code> locally, or in
-            the host’s environment variables when deployed. See{" "}
-            <code className="font-mono">SETUP.md</code>.
-          </Notice>
-        </div>
-      ) : null}
 
       <div className="relative flex flex-1 flex-col items-center justify-center text-center">
         <MoneyRain />
