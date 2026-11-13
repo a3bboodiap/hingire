@@ -1,0 +1,113 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Look and feel (PRD): hand-drawn and playful, like a sketchbook.
+   Cream background with a faint grid, black ink outlines, rounded cards.
+   --------------------------------------------------------------------------- */
+@theme {
+  --color-cream:      #FBF6E9;
+  --color-cream-deep: #F3ECD8;
+  --color-ink:        #16150F;
+  --color-ink-soft:   #55523F;
+  --color-ink-faint:  #8C8873;
+  --color-money:      #12833F;   /* money green: Accept, Love, save */
+  --color-money-soft: #DFF1E3;
+  --color-danger:     #CE3526;   /* Decline and errors */
+  --color-danger-soft:#FBE4E1;
+  --color-gold:       #E9A319;   /* stars */
+  --font-hand: var(--font-caveat), "Comic Sans MS", cursive;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+:root { color-scheme: light; }
+
+html, body { height: 100%; }
+
+body {
+  background-color: var(--color-cream);
+  /* the faint sketchbook grid */
+  background-image:
+    linear-gradient(to right,  rgba(22,21,15,.055) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(22,21,15,.055) 1px, transparent 1px);
+  background-size: 22px 22px;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  overscroll-behavior-y: none;
+}
+
+/* Screen titles are handwritten; everything else is the sans. */
+.title-hand {
+  font-family: var(--font-hand);
+  font-weight: 700;
+  letter-spacing: .01em;
+  line-height: 1.05;
+}
+
+/* Ink-outlined card with a slightly offset shadow, like a pen sketch. */
+.ink-card {
+  background: #FFFDF6;
+  border: 2px solid var(--color-ink);
+  border-radius: 18px;
+  box-shadow: 3px 4px 0 0 var(--color-ink);
+}
+.ink-card-flat {
+  background: #FFFDF6;
+  border: 2px solid var(--color-ink);
+  border-radius: 18px;
+}
+
+.ink-btn {
+  border: 2px solid var(--color-ink);
+  border-radius: 14px;
+  box-shadow: 2px 3px 0 0 var(--color-ink);
+  font-weight: 600;
+  transition: transform .06s ease, box-shadow .06s ease;
+}
+.ink-btn:active:not(:disabled) {
+  transform: translate(2px, 3px);
+  box-shadow: 0 0 0 0 var(--color-ink);
+}
+.ink-btn:disabled { opacity: .45; box-shadow: 2px 3px 0 0 var(--color-ink); }
+
+.ink-input {
+  background: #FFFDF6;
+  border: 2px solid var(--color-ink);
+  border-radius: 12px;
+  padding: .65rem .8rem;
+  width: 100%;
+  font-size: 1rem;
+}
+.ink-input:focus {
+  outline: 3px solid color-mix(in srgb, var(--color-money) 45%, transparent);
+  outline-offset: 1px;
+}
+.ink-input[aria-invalid="true"] { border-color: var(--color-danger); }
+
+/* A field the CV reader could not fill, highlighted for the user to check. */
+.field-blank {
+  border-color: var(--color-gold);
+  background: #FFF8E6;
+  box-shadow: inset 0 0 0 2px rgba(233,163,25,.25);
+}
+
+/* The "LOVE" stamp on a swiped card */
+.stamp {
+  font-family: var(--font-hand);
+  border: 5px solid currentColor;
+  border-radius: 12px;
+  padding: .1em .35em;
+  transform: rotate(-16deg);
+  letter-spacing: .06em;
+  opacity: .92;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
+}
