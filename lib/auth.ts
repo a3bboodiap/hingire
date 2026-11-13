@@ -3,6 +3,7 @@ import "server-only";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import type { SupabaseClient, User } from "@supabase/supabase-js";
 import type { Database } from "@/lib/database.types";
+import { DEMO } from "@/lib/demo";
 
 export type Profile = {
   id: string;
@@ -37,6 +38,12 @@ export type Session = {
  * locally, so a forged or stale cookie fails here.
  */
 export async function getSession(): Promise<Session | null> {
+  // Demo mode: no Supabase configured, so hand back a sample session so every
+  // screen can be shown. Never reached once real keys are set.
+  if (DEMO) {
+    const { demoSession } = await import("@/lib/demo-session");
+    return demoSession();
+  }
   const supabase = await createSupabaseServerClient();
   const {
     data: { user },

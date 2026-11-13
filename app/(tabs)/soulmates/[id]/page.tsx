@@ -6,6 +6,8 @@ import { Stars, Pill, Button, Notice } from "@/components/ui";
 import { AcceptDecline } from "@/components/accept-decline";
 import { CommentBox } from "@/components/comment-box";
 import { ReportLink } from "@/components/report-link";
+import { DEMO } from "@/lib/demo";
+import { DemoJobDetail } from "@/components/demo-job-detail";
 
 export const dynamic = "force-dynamic";
 
@@ -16,6 +18,21 @@ export default async function JobDetail({
   const session = await getSession();
   if (!session) redirect("/login");
   const { supabase, user } = session;
+
+  if (DEMO) {
+    const { demoJobs, demoReviews, demoState } = await import("@/lib/demo");
+    const dj = demoJobs.find((j) => j.id === id);
+    if (!dj) notFound();
+    const revs = demoReviews.filter((r) => r.job_id === id);
+    return (
+      <DemoJobDetail
+        job={dj}
+        reviews={revs}
+        saved={demoState.saved.has(id)}
+        verified={demoState.kycPassed}
+      />
+    );
+  }
 
   // RLS already limits this to open jobs; an id the user may not see misses.
   const { data: job } = await supabase

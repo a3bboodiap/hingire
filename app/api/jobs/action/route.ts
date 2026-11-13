@@ -2,6 +2,7 @@ import { withUser } from "@/lib/route-helpers";
 import { jobActionSchema } from "@/lib/validation";
 import { parseBody, ok, fail } from "@/lib/http";
 import { audit } from "@/lib/audit";
+import { DEMO } from "@/lib/demo";
 
 export const runtime = "nodejs";
 
@@ -9,6 +10,30 @@ export async function POST(request: Request) {
   const parsed = await parseBody(request, jobActionSchema);
   if (!parsed.ok) return parsed.response;
   const { job_id, action } = parsed.data;
+
+  if (DEMO) {
+    const { demoState } = await import("@/lib/demo");
+    if (action === "save") {
+      demoState.dismissed.delete(job_id);
+      demoState.saved.add(job_id);
+      if (!demoState.applications.some((a) => a.job_id === job_id)) {
+        const { demoJobs } = await import("@/lib/demo");
+        const j = demoJobs.find((x) => x.id === job_id);
+        if (j) {
+          demoState.applications.push({
+            id: `a-${job_id}`, job_id, stage: "saved",
+            title: j.title, company: j.company, hasRejection: false,
+          });
+        }
+      }
+    } else if (action === "unsave") {
+      demoState.saved.delete(job_id);
+    } else {
+      demoState.saved.delete(job_id);
+      demoState.dismissed.add(job_id);
+    }
+    return ok({ done: true });
+  }
 
   return withUser("apply", async ({ user, supabase }) => {
     // The job must exist and be open. RLS on jobs already restricts this to

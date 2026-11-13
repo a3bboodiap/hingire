@@ -2,6 +2,7 @@ import { withUser } from "@/lib/route-helpers";
 import { rejectionSchema } from "@/lib/validation";
 import { parseBody, ok, fail, ERR } from "@/lib/http";
 import { audit } from "@/lib/audit";
+import { DEMO } from "@/lib/demo";
 
 export const runtime = "nodejs";
 
@@ -9,6 +10,16 @@ export async function POST(request: Request) {
   const parsed = await parseBody(request, rejectionSchema);
   if (!parsed.ok) return parsed.response;
   const r = parsed.data;
+
+  if (DEMO) {
+    const { demoState } = await import("@/lib/demo");
+    const a = demoState.applications.find((x) => x.id === r.application_id);
+    if (a) { a.stage = "rejected"; a.hasRejection = true; }
+    const existing = demoState.rejections.find((x) => x.application_id === r.application_id);
+    if (existing) existing.stage = r.stage;
+    else demoState.rejections.push({ application_id: r.application_id, stage: r.stage });
+    return ok({ logged: true });
+  }
 
   return withUser("apply", async ({ user, supabase }) => {
     const { data: app } = await supabase

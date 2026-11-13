@@ -1,6 +1,7 @@
 import "server-only";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "@/lib/database.types";
+import { DEMO } from "@/lib/demo";
 
 export type { FeedJob } from "@/lib/job-format";
 export { payLabel, CONTRACT_LABEL, MODE_LABEL } from "@/lib/job-format";
@@ -23,6 +24,15 @@ export async function getFeed(
     sort: "ai_rank",
   },
 ) {
+  if (DEMO) {
+    const { demoFeed } = await import("@/lib/demo");
+    return demoFeed({
+      includeDismissed: opts.includeDismissed,
+      sort: opts.sort,
+      filters: opts.filters,
+    });
+  }
+
   const [jobsRes, matchesRes, statsRes, savedRes, dismissedRes] = await Promise.all([
     db.from("jobs").select("*, companies(name)").eq("closed", false),
     db.from("job_matches").select("*").eq("user_id", userId),

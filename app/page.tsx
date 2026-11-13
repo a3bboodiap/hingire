@@ -5,6 +5,7 @@ import { supabaseConfigured } from "@/lib/env";
 import { SwipeSlider } from "@/components/swipe-slider";
 import { MoneyRain } from "@/components/money-rain";
 import { Notice } from "@/components/ui";
+import { DEMO } from "@/lib/demo";
 
 /**
  * Screen 1 — Welcome.
@@ -22,6 +23,14 @@ export default async function WelcomePage() {
   return (
     <main className="flex min-h-dvh flex-col px-5 pb-8 pt-10">
       {!supabaseConfigured ? (
+        <div className="mb-4">
+          <Notice tone="gold" title="Demo mode">
+            No database is connected, so the app is running on built-in sample
+            data. Every screen works; nothing is saved between restarts.
+          </Notice>
+        </div>
+      ) : null}
+      {false ? (
         <div className="mb-4">
           <Notice tone="gold" title="Not connected yet">
             Supabase keys are missing, so sign-up and sign-in are switched off.
@@ -47,12 +56,18 @@ export default async function WelcomePage() {
       </div>
 
       <div className="space-y-4">
-        <SwipeSlider href="/signup" label="Swipe" />
+        <SwipeSlider href={DEMO ? "/top-match" : "/signup"} label="Swipe" />
         <p className="text-center text-sm">
-          Already with us?{" "}
-          <Link href="/login" className="font-semibold underline">
-            Log in
-          </Link>
+          {DEMO ? (
+            <Link href="/top-match" className="font-semibold underline">
+              Skip into the app
+            </Link>
+          ) : (
+            <>
+              Already with us?{" "}
+              <Link href="/login" className="font-semibold underline">Log in</Link>
+            </>
+          )}
         </p>
         <p className="text-center text-xs text-ink-faint">
           18+ only. By continuing you agree to our{" "}
